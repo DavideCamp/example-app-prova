@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ShortRequest;
 use App\Models\ShortUrl;
+use illuminate\support\Str;
+
 
 class ShortUrlController extends Controller
 {
@@ -14,22 +16,33 @@ class ShortUrlController extends Controller
     
     {
         # code...
-        if($request->original_url){
-            $new_url = ShortUrl::create([
-                'original_url' => $request->original_url
-            ]);
-            if($new_url){
-                $short_url = base_convert($new_url->id, 10, 36);
-                $new_url->update([
-                    'short_url' => $short_url
-                ]);
+        if(!$request->original_url){
 
-                return redirect()->back()->with('success_message', 'il tuo url è: <a href="'.url($short_url).'">' .url($short_url).'</a>' );
-            }
+            return;
         }  
+        $new_url = new ShortUrl();
+        $new_url->original_url = $request->original_url;
+        $new_url->short_url = Str::random(10);
+
+           
+
+        if(!$new_url->save()){
+            return;     
+        }
+
+        return redirect()->back()->with('success_message', 'il tuo url è: <a href="'.url($new_url->short_url).'">' .url($new_url->short_url).'</a>' );
+                    
+        
+            
+       
 
        
     }
+
+    #funzione per controllare se ci sono short url uguali
+
+
+
     public function show($code){
        $short_url = ShortUrl::where('short_url',$code)->first();
        if($short_url){

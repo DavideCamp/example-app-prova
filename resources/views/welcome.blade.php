@@ -33,7 +33,11 @@
             <div class="mb-3">
                 <form method="POST" action="{{route('short.url')}}">
                 @csrf
+                
                     <input type="url" name="original_url"/>
+                    @error('original_url')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                    @enderror
 
                     
                     <button type="submit"class="btn btn-success" >
