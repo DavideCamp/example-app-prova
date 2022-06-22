@@ -24,6 +24,10 @@ class ShortUrlController extends Controller
         $new_url->original_url = $request->original_url;
         $new_url->short_url = Str::random(10);
 
+        
+
+       
+
            
 
         if(!$new_url->save()){
@@ -31,7 +35,7 @@ class ShortUrlController extends Controller
         }
 
         return redirect()->back()->with('success_message', 'il tuo url è: <a href="'.url($new_url->short_url).'">' .url($new_url->short_url).'</a>' );
-                    
+    
         
             
        
@@ -39,16 +43,38 @@ class ShortUrlController extends Controller
        
     }
 
-    #funzione per controllare se ci sono short url uguali
+
+
+    
+
+
+    public function unique($new_url){
+        #funzione per controllare se ci sono short url uguali
+
+        $colonna = ShortUrl::where("short_url",$new_url)->exists;
+
+        if(!$colonna){
+            return $new_url;
+
+        }
+                    
+            return $new_url->short_url = Str::random(10);           
+              
+    }
+
+
+
 
 
 
     public function show($code){
+
        $short_url = ShortUrl::where('short_url',$code)->first();
-       if($short_url){
-        return redirect()->to(url($short_url->original_url));
+       if(!$short_url){
+        return redirect()->to(url('/'));        
        }
-       return redirect()->to(url('/'));
+       return redirect()->to(url($short_url->original_url));
+       
     }
 }
   
