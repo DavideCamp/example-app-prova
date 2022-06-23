@@ -40,7 +40,7 @@
                     @enderror
 
                     
-                    <button type="submit"class="btn btn-success" >
+                    <button type="submit"class="btn btn-success" value="buttom" >
                         accorciami
                     </button>
 

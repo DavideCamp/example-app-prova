@@ -30,6 +30,21 @@ class UrlTest extends TestCase
         $response->assertSee('short_url');
     }
 
+
+    public function test_button(){
+        //non riconosce il metodo press...
+        $this->press('button');
+
+    }
+
+    public function test_url_short()
+    {
+        $this->visit('/short')
+            ->click('short_url')
+            ->seePageIs('short_url');
+    }
+
+
     
 
 
